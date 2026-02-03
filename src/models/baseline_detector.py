@@ -1,6 +1,6 @@
 """
 Baseline Anomaly Detection Model V2 - With Temporal Features
-Author: Elise
+Author: Nhari Saad
 Date: January 2026
 """
 

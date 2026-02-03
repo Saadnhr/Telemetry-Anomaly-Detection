@@ -1,0 +1,310 @@
+# Data Card: Satellite Telemetry Anomaly Detection
+**Document ID:** SSAI-DATA-001  
+**Version:** 1.0  
+**Date:** January 12, 2026  
+**Author:** Elise  
+**Status:** Draft - Week 1
+
+---
+
+## 1. Dataset Overview
+
+### 1.1 Dataset Name
+Satellite Telemetry Dataset for Anomaly Detection (STAD)
+
+### 1.2 Purpose
+This dataset provides telemetry time-series data for training and validating unsupervised anomaly detection models in satellite operations context.
+
+### 1.3 Dataset Type
+- [ ] Real satellite telemetry (if available)
+- [x] Simulated/synthetic telemetry
+- [ ] Copernicus Sentinel-1/2 tiles
+- [ ] Hybrid (combination)
+
+### 1.4 Data Collection Period
+**Collection Start:** [TBD - Week 2]  
+**Collection End:** [TBD - Week 2]  
+**Duration:** [TBD]
+
+---
+
+## 2. Data Description
+
+### 2.1 Data Format
+- **Primary Format:** CSV, HDF5, or JSON
+- **Encoding:** UTF-8
+- **Compression:** None / gzip / other
+
+### 2.2 Data Structure
+**Time-Series Characteristics:**
+- **Sampling Rate:** [e.g., 1 Hz, 0.1 Hz]
+- **Total Samples:** [TBD]
+- **Total Duration:** [TBD]
+- **Timestamp Format:** ISO 8601 (UTC)
+
+**Telemetry Parameters (Example):**
+| Parameter | Unit | Range | Sampling Rate | Description |
+|-----------|------|-------|---------------|-------------|
+| Battery Voltage | V | 20-35 | 1 Hz | Main battery voltage |
+| Solar Array Current | A | 0-10 | 1 Hz | Solar panel output current |
+| Temperature_CPU | °C | -20 to 60 | 0.5 Hz | Onboard computer temperature |
+| Temperature_Battery | °C | -10 to 40 | 0.5 Hz | Battery pack temperature |
+| Attitude_Roll | deg | -180 to 180 | 10 Hz | Spacecraft roll angle |
+| Attitude_Pitch | deg | -90 to 90 | 10 Hz | Spacecraft pitch angle |
+| Attitude_Yaw | deg | -180 to 180 | 10 Hz | Spacecraft yaw angle |
+| Communication_SNR | dB | 0-40 | 0.1 Hz | Signal-to-noise ratio |
+
+**Total Features:** [TBD based on actual data]
+
+### 2.3 Data Volume
+- **Raw Dataset Size:** [TBD] GB
+- **Processed Dataset Size:** [TBD] GB
+- **Training Set:** [TBD]% / [TBD] samples
+- **Validation Set:** [TBD]% / [TBD] samples
+- **Test Set:** [TBD]% / [TBD] samples
+
+---
+
+## 3. Data Provenance
+
+### 3.1 Data Source
+**Source Type:**
+- [ ] NASA telemetry archive
+- [ ] ESA mission data
+- [x] Synthetic generation using domain knowledge
+- [ ] Copernicus Open Access Hub
+- [ ] Other: ___________
+
+**Source Details:** [Describe generation method or data source]
+
+### 3.2 Data Collection Methodology
+[If synthetic: Describe simulation approach, normal operation patterns, anomaly injection method]
+
+[If real data: Describe mission, satellite subsystems, collection period]
+
+### 3.3 Data Rights and Licenses
+- **License:** [e.g., Public Domain, CC-BY-4.0, Academic Use Only]
+- **Restrictions:** [Any usage restrictions]
+- **Attribution:** [Required attribution if applicable]
+
+---
+
+## 4. Data Quality
+
+### 4.1 Completeness
+- **Missing Values:** [TBD]%
+- **Missing Value Patterns:** Random / Systematic / Sensor failure
+- **Handling Strategy:** Forward fill / Interpolation / Deletion
+
+### 4.2 Data Quality Issues
+**Known Issues:**
+- [ ] Sensor noise (specify parameters with high noise)
+- [ ] Timestamp irregularities
+- [ ] Calibration drift
+- [ ] Communication dropouts
+- [ ] Other: ___________
+
+**Quality Metrics:**
+- **Signal-to-Noise Ratio:** [TBD] dB (average across parameters)
+- **Outlier Percentage:** [TBD]%
+- **Duplicate Samples:** [TBD]
+
+### 4.3 Data Validation
+**Validation Checks Performed:**
+- [x] Timestamp continuity check
+- [x] Value range validation (within physical limits)
+- [x] Statistical distribution analysis
+- [ ] Cross-parameter consistency check
+- [ ] Other: ___________
+
+---
+
+## 5. Anomalies
+
+### 5.1 Anomaly Definition
+**Normal Operation Criteria:** [Define what constitutes "normal" telemetry]
+
+**Anomaly Types Present:**
+1. **Point Anomalies:** Single data points significantly deviating from normal
+2. **Contextual Anomalies:** Values abnormal in specific context (e.g., high current during eclipse)
+3. **Collective Anomalies:** Sequences of points forming anomalous patterns
+4. **Drift Anomalies:** Gradual parameter degradation over time
+
+### 5.2 Anomaly Labels
+**Labeling Methodology:**
+- [ ] Ground truth from actual incidents
+- [x] Synthetic injection with known timestamps
+- [ ] Expert annotation
+- [ ] Unsupervised clustering validation
+
+**Anomaly Distribution:**
+| Anomaly Type | Count | Percentage | Duration |
+|--------------|-------|------------|----------|
+| Battery undervoltage | [TBD] | [TBD]% | [TBD] minutes |
+| Temperature spike | [TBD] | [TBD]% | [TBD] seconds |
+| Communication loss | [TBD] | [TBD]% | [TBD] minutes |
+| Attitude drift | [TBD] | [TBD]% | [TBD] minutes |
+| **Total Anomalies** | [TBD] | [TBD]% | - |
+
+**Class Imbalance:**
+- Normal samples: [TBD]%
+- Anomalous samples: [TBD]%
+- Imbalance ratio: [TBD]:1
+
+---
+
+## 6. Preprocessing
+
+### 6.1 Preprocessing Steps
+1. **Timestamp Alignment:** Resample to uniform sampling rate
+2. **Missing Value Imputation:** [Specify method]
+3. **Normalization:** Min-max scaling / Z-score standardization
+4. **Feature Engineering:** 
+   - Rolling statistics (mean, std over windows)
+   - Temporal derivatives
+   - Fourier features (for cyclical patterns like orbital period)
+5. **Outlier Treatment:** [Specify approach]
+
+### 6.2 Preprocessing Code
+**Location:** `src/preprocessing/`  
+**Main Script:** `preprocess_telemetry.py`
+
+### 6.3 Processed Data Artifacts
+**Output Location:** `data/processed/`  
+**Files:**
+- `train_telemetry_processed.csv`
+- `val_telemetry_processed.csv`
+- `test_telemetry_processed.csv`
+- `scaler.pkl` (for normalization parameters)
+- `feature_names.txt`
+
+---
+
+## 7. Ethical and Privacy Considerations
+
+### 7.1 Privacy
+**Personal Data:** No personal or sensitive information included
+
+**Satellite Mission Data:** 
+- [ ] Classified/restricted mission data (not applicable)
+- [x] Public/simulated data only
+- [ ] Anonymized real mission data
+
+### 7.2 Bias and Fairness
+**Potential Biases:**
+- Selection bias: [e.g., overrepresentation of certain operational modes]
+- Temporal bias: [e.g., limited to specific mission phases]
+- Synthetic data limitations: [Describe assumptions in simulation]
+
+### 7.3 Intended Use
+**Approved Uses:**
+- Academic research on satellite anomaly detection
+- Algorithm development and benchmarking
+- Educational purposes
+
+**Prohibited Uses:**
+- Operational satellite control without further validation
+- Mission-critical decisions without human oversight
+
+---
+
+## 8. Data Limitations
+
+### 8.1 Known Limitations
+1. **Synthetic Data:** Generated data may not capture all real-world complexities
+2. **Limited Anomaly Diversity:** Finite set of anomaly types compared to operational reality
+3. **Stationary Assumptions:** May not reflect long-term mission degradation
+4. **Simplified Physics:** Simulation may use simplified thermal/power models
+
+### 8.2 Recommended Improvements
+- Incorporate more diverse anomaly scenarios
+- Validate with real mission data if available
+- Extend temporal coverage to multiple years
+- Include seasonal variations (e.g., eclipse seasons)
+
+---
+
+## 9. Dataset Access
+
+### 9.1 Location
+**Local Path:** `/home/claude/satellite_ai_project/data/raw/`  
+**Cloud Storage:** [If applicable]  
+**Public Repository:** [If published]
+
+### 9.2 Access Instructions
+```bash
+# Download (if from external source)
+# [Instructions here]
+
+# Local access
+cd /home/claude/satellite_ai_project/data/raw
+ls -lh
+```
+
+### 9.3 Data Loading Example
+```python
+import pandas as pd
+
+# Load telemetry data
+df = pd.read_csv('data/raw/telemetry_data.csv', parse_dates=['timestamp'])
+df.set_index('timestamp', inplace=True)
+
+# Basic statistics
+print(df.describe())
+print(f"Date range: {df.index.min()} to {df.index.max()}")
+print(f"Total samples: {len(df)}")
+```
+
+---
+
+## 10. Validation Results
+
+### 10.1 Statistical Summary
+[To be completed in Week 2 after data collection/generation]
+
+**Distribution Characteristics:**
+- Mean values per parameter: [TBD]
+- Standard deviations: [TBD]
+- Correlation matrix: [TBD - include heatmap]
+
+### 10.2 Visualization
+[Include plots in Week 2:]
+- Time-series plots of key parameters
+- Distribution histograms
+- Correlation heatmap
+- Anomaly distribution over time
+
+---
+
+## 11. References
+
+### 11.1 Related Datasets
+- NASA Telemetry Data: [Link if applicable]
+- Copernicus Sentinel Data: https://scihub.copernicus.eu/
+- SpaceNet Satellite Imagery: https://spacenet.ai/
+
+### 11.2 Related Publications
+[List relevant papers on satellite anomaly detection or telemetry datasets]
+
+---
+
+## 12. Document Control
+
+### 12.1 Approval
+
+| Role | Name | Date | Signature |
+|------|------|------|-----------|
+| Author | Elise | 2026-01-12 | |
+| Reviewer | TBD | | |
+
+### 12.2 Revision History
+
+| Version | Date | Author | Changes |
+|---------|------|--------|---------|
+| 1.0 | 2026-01-12 | Elise | Initial template - Week 1 deliverable |
+
+---
+
+**Compliance:** This data card follows ECSS-Q-ST-80C (Software Product Assurance) and EU HLEG Trustworthy AI guidelines for data documentation.
+
+**Status:** This template should be completed with actual data characteristics during Week 2 data collection/generation phase.
